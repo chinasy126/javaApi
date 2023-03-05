@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.java.mapper.UserMapper">
+    <select id="selectListByPage" resultType="com.example.java.entity.User">
+        SELECT
+        `user`.*,role.roleName
+        FROM
+        t_user `user`
+        LEFT JOIN role ON role.id = `user`.roleId
+        where 1
+        <if test="user.username != null and user.username != ''">
+            and `user`.username like CONCAT('%',#{user.username},'%')
+        </if>
+        <if test="user.createTime != null ">
+            and `user`.createTime between #{user.createTime} and #{user.createTime}
+        </if>
+        order by `user`.id desc
+    </select>
+
+
+</mapper>
