@@ -3,6 +3,7 @@ package com.example.java.controller.permission;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.example.java.entity.Productclass;
 import com.example.java.entity.permission.Menu;
 import com.example.java.entity.permission.Menubutton;
 import com.example.java.mapper.permission.MenuMapper;
@@ -12,14 +13,18 @@ import com.example.java.service.permission.IMenubuttonService;
 import com.example.java.utils.Result;
 import com.example.java.vo.menus.BatchMenuVo;
 import com.example.java.vo.menus.MenusVo;
+import io.swagger.models.auth.In;
+import javafx.scene.input.Mnemonic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -60,7 +65,6 @@ public class MenuController {
 
     @RequestMapping(value = "/menulist", method = RequestMethod.POST)
     public Result menuList(@RequestBody Menu menu, @RequestParam int currentPage, @RequestParam int pageSize) {
-        //log.info("ccccccccccccccccccccccccccccccccccccccccccccccccc");
         IPage<Menu> menuList = iMenuService.getMenuList(currentPage, pageSize, menu);
         return Result.ok().data("data", menuList);
     }
@@ -110,14 +114,15 @@ public class MenuController {
         Menu data = new Menu();
         BeanUtils.copyProperties(menusVo, data);
 
-        // 如果不为空添加二级菜单，为空添加一级菜单
-        if (!StringUtils.isBlank(menusVo.getParentMenu())) {
-            String[] stringList = menusVo.getParentMenu().split(",");
+        // 如果不为空添加二级菜单， !StringUtils.isBlank(menusVo.getParentMenu())
+        if (menusVo.getFid() != null) {
 
-            QueryWrapper<Menu> menusVoQueryWrapper = new QueryWrapper<>();
-            menusVoQueryWrapper.eq("name", stringList[1]).eq("fid", 0);
-            Menu menu = menuMapper.selectOne(menusVoQueryWrapper);
-            data.setFid(menu.getId());
+//            String[] stringList = menusVo.getParentMenu().split(",");
+//            String[] stringList = new String[0];
+//            QueryWrapper<Menu> menusVoQueryWrapper = new QueryWrapper<>();
+//            menusVoQueryWrapper.eq("name", stringList[1]).eq("fid", 0);
+//            Menu menu = menuMapper.selectOne(menusVoQueryWrapper);
+//            data.setFid(menu.getId());
         } else {
             data.setFid(0);
         }
@@ -135,6 +140,12 @@ public class MenuController {
 //    public Result dataDelete(@PathVariable int id) {
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public Result dataDelete(@RequestBody Menu menu) {
+
+        // 删除菜单下对应按钮
+        // 如果删除的是一级菜单 先查询二级菜单，后删除二级菜单对应按钮
+        iMenubuttonService.deleteByMenuIds(menu.getId());
+
+        // 先删除按钮 后删除菜单
         QueryWrapper<Menu> newsQueryWrapper = new QueryWrapper<Menu>();
         newsQueryWrapper.eq("id", menu.getId());
         int deleteId = menuMapper.delete(newsQueryWrapper);
@@ -142,6 +153,7 @@ public class MenuController {
         QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("fid", menu.getId());
         menuMapper.delete(queryWrapper);
+
         return Result.ok().data("deleteId", deleteId);
     }
 
@@ -154,10 +166,13 @@ public class MenuController {
     @RequestMapping(value = "/batchdelete", method = RequestMethod.DELETE)
     public Result batchDelete(@RequestBody Map<String, List<Integer>> map) {
         List<Integer> deleteIds = map.get("ids");
-        if(deleteIds.size() > 0){
+        if (deleteIds.size() > 0) {
+            for (Integer id : deleteIds) {
+                iMenubuttonService.deleteByMenuIds(id);
+            }
             int batchDeleteId = menuMapper.deleteBatchIds(deleteIds);
             return Result.ok().data("ok", batchDeleteId);
-        }else {
+        } else {
             return Result.error().message("请选择要删除数据");
         }
 
@@ -188,6 +203,24 @@ public class MenuController {
     }
 
     /**
+     * 转换拼接 菜单与按钮
+     *
+     * @param menuList
+     * @param menubuttonList
+     * @return
+     */
+
+    public List<Menu> getMenuAndBtn(List<Menu> menuList, List<Menubutton> menubuttonList) {
+        for (int i = 0; i < menuList.size(); i++) {
+            for (Menu menu : menuList.get(i).getChildren()) {
+                List<Menubutton> menuBtnList = menubuttonList.stream().filter(item -> item.getMenuId() == menu.getId()).collect(Collectors.toList());
+                menu.setMenubuttonList(menuBtnList);
+            }
+        }
+        return menuList;
+    }
+
+    /**
      * 批量添加菜单
      *
      * @param batchMenuVoList
@@ -195,53 +228,112 @@ public class MenuController {
      */
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Result batchInsert(@RequestBody List<BatchMenuVo> batchMenuVoList) {
+        // 数据库获取前端菜单
+        List<Menu> AllMenu = iMenuService.getAllMenusAndButtons();
+        // 数据库获取所有按钮
+        List<Menubutton> AllButton = iMenubuttonService.getAllButtons();
+        // 转换带按钮的菜单
+        List<Menu> databaseMenu = this.getMenuAndBtn(AllMenu, AllButton);
 
-        menuMapper.delete(null); // 删除菜单
-        menubuttonMapper.delete(null); // 删除按钮
-        // 开始循环前端传递数据[菜单,button 按钮]
-        batchMenuVoList.forEach(i -> {
-            // 新增一级菜单
-            Menu menu = new Menu();
-            BeanUtils.copyProperties(i, menu);
-
-            menu.setIcon((String) i.getMeta().get("icon"));
-            menu.setMenuOrder((Integer) i.getMeta().get("menuOrder"));
-
-            menuMapper.insert(menu);// 插入一级菜单
-            // 新增二级菜单
-            if (i.getChildren().size() != 0) {
-                int fid = menu.getId(); // 父级菜单
-                i.getChildren().forEach(childI -> { // 开始循环二级菜单
-                    Menu menuChild = new Menu();
-                    BeanUtils.copyProperties(childI, menuChild); // 开始复制内容
-                    menuChild.setFid(fid); // 二级菜单添加父级ID
-//                    String buttons = StringUtils.join(childI.getButton(), '|');
-//                    menuChild.setButton(buttons);
-                    menuChild.setIcon((String) childI.getMeta().get("icon"));
-                    menuChild.setMenuOrder((Integer) childI.getMeta().get("menuOrder"));
-
-
-                    menuMapper.insert(menuChild); // 插入二级菜单数据
-                    int childId = menuChild.getId(); // 获取二级菜单ID
-                    List<Menubutton> menubuttonList = childI.getButton().stream().map(btnI -> {
-                        // 给按钮开始赋值
-                        Menubutton menubutton = new Menubutton();
-                        // 将 按钮的 OBJECT 转换成 MAP < key ， value >
-                        Map entity = (Map) btnI;
-                        String name = entity.get("title").toString();
-                        BeanUtils.copyProperties(btnI, menubutton);
-                        menubutton.setMenuId(childId);
-                        menubutton.setName(entity.get("title").toString());
-                        menubutton.setType(entity.get("type").toString());
-                        return menubutton;
-                    }).collect(Collectors.toList());
-                    iMenubuttonService.saveBatch(menubuttonList);
-                    System.out.println(menubuttonList);
+        // 1 展开前端菜单
+        List<Menu> postMenuList = iMenuService.expandMenu(batchMenuVoList);
+        // 2 前端菜单循环 新增
+        for (BatchMenuVo menu : batchMenuVoList) {
+            Menu m = databaseMenu.stream().filter(i -> i.getName().equals(menu.getName())).findAny().orElse(null);
+            if (m != null) {
+                // 存在一级菜单
+                for (BatchMenuVo subPostMenu : menu.getChildren()) {
+                    List<Menu> subDatabaseMenu = m.getChildren();
+                    Menu subMenu = subDatabaseMenu.stream().filter(i -> i.getName().equals(subPostMenu.getName())).findAny().orElse(null);
+                    if (subMenu == null) {
+                        // 如果数据库中不存在二级菜单，则新增
+                        Menu insertMent = new Menu();
+                        BeanUtils.copyProperties(subPostMenu, insertMent);
+                        insertMent.setFid(m.getId());
+                        // 新增二级菜单
+                        menuMapper.insert(insertMent);
+                        // 新增二级菜单按钮
+                        iMenubuttonService.addChilerenMenuButton(subPostMenu.getButton(), insertMent.getId());
+                    } else {
+                        // 如果二级菜单有则对比按钮 比对按钮
+                        List<Menubutton> menubuttonList = subPostMenu.getButton().stream()
+                                .map(btn -> {
+                                    Map entity = (Map) btn;
+                                    Menubutton menubutton = new Menubutton();
+                                    menubutton.setName(entity.get("title").toString());
+                                    menubutton.setType(entity.get("type").toString());
+                                    return menubutton;
+                                }).collect(Collectors.toList());
+                        // 对比二级菜单 前端传递，数据库查询的按钮
+                        iMenubuttonService.compareButton(menubuttonList, subMenu.getMenubuttonList(), subMenu.getId());
+                    }
+                }
+            } else {
+                // 数据库中不存在一级菜单新增
+                Menu insertMainMenu = new Menu();
+                BeanUtils.copyProperties(menu, insertMainMenu);
+                // 新增一级菜单
+                menuMapper.insert(insertMainMenu);
+                menu.getChildren().forEach(item -> {
+                    Menu insertSubMenu = new Menu();
+                    BeanUtils.copyProperties(item, insertSubMenu);
+                    insertSubMenu.setFid(insertMainMenu.getId());
+                    // 新增二级菜单
+                    menuMapper.insert(insertSubMenu);
+                    // 去添加二级菜单的按钮
+                    iMenubuttonService.addChilerenMenuButton(item.getButton(), insertSubMenu.getId());
                 });
             }
-        });
+        }
 
+        // 3 数据库中菜单循环
+        for (Menu menu : databaseMenu) {
+            BatchMenuVo m = batchMenuVoList.stream()
+                    .filter(i -> i.getName().equals(menu.getName()))
+                    .findAny()
+                    .orElse(null);
+            // 数据库中的菜单多了，则删除，
+            // 一级菜单
+            if (m == null) {
+                // 删除方法
+
+                // 删除二级菜单按钮
+                iMenubuttonService.deleteByMenuIds(menu.getId());
+                // 删除一级菜单
+                menuMapper.delete(new QueryWrapper<Menu>().eq("id", menu.getId()));
+                // 删除二级菜单
+                menuMapper.delete(new QueryWrapper<Menu>().eq("fid", menu.getId()));
+            } else {
+                // 一级菜单对比没有问题，对比二级菜单
+                for (Menu subMenu : menu.getChildren()) {
+                    BatchMenuVo postSubM = m.getChildren().stream()
+                            .filter(i -> i.getName().equals(subMenu.getName()))
+                            .findAny().orElse(null);
+                    if (postSubM == null) {
+                        menubuttonMapper.delete(new QueryWrapper<Menubutton>().eq("menuId", subMenu.getId()));
+                        // 二级菜单中数据库存在，前端不存在则删除
+                        iMenuService.removeById(subMenu.getId());
+                        //  menuMapper.delete(new QueryWrapper<Menu>().eq("id", subMenu.getId()));
+                    }
+                }
+
+            }
+
+        }
         return Result.ok().data("data", "ok");
+    }
+
+
+    /**
+     * 通过一级菜单获取所有二级菜单
+     *
+     * @param menu
+     * @return
+     */
+    @RequestMapping(value = "/getSecMenuList", method = RequestMethod.POST)
+    public Result getSecMenuList(@RequestBody Menu menu) {
+        List<Menu> menus = menuMapper.selectList(new QueryWrapper<Menu>().eq("fid", menu.getId()));
+        return Result.ok().data("data", menus);
     }
 
 }

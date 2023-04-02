@@ -35,8 +35,10 @@ public class MenusVo {
 
     @ApiModelProperty(value = "一级菜单")
     @TableField(exist = false)
-    private String parentMenu;
+    private Integer parentMenu;
 
     @ApiModelProperty(value = "菜单Entity")
     Menu menu;
+
+    private Integer menuOrder;
 }

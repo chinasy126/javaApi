@@ -107,11 +107,13 @@ public class News implements Serializable {
     private String webdes;
 
 
+    public String getfTitle() {
+        return fTitle;
+    }
 
-
-
-
-
+    public void setfTitle(String fTitle) {
+        this.fTitle = fTitle;
+    }
 }
 
 //name：Excel中的列名；

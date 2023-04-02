@@ -19,4 +19,7 @@ public interface IRolemenusService extends IService<RoleMenus> {
      public void comparisonarray(RoleVo roleVo);
 
 //    IPage<Role> getDataByPage();
+
+     void rolePower(RoleVo roleVo);
+
 }

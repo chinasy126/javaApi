@@ -4,19 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.java.entity.News;
 import com.example.java.entity.User;
-import com.example.java.entity.permission.Menu;
-import com.example.java.entity.permission.Role;
-import com.example.java.entity.permission.RoleMenus;
+import com.example.java.entity.permission.*;
 import com.example.java.mapper.UserMapper;
 import com.example.java.mapper.permission.MenuMapper;
+import com.example.java.mapper.permission.RoleButtonsMapper;
 import com.example.java.mapper.permission.RolemenusMapper;
+import com.example.java.service.permission.IMenuService;
 import com.example.java.utils.JwtUtils;
 import com.example.java.utils.MD5Util;
 import com.example.java.utils.RandomValidateCodeUtil;
 import com.example.java.utils.Result;
+import com.example.java.vo.menus.MenusVo;
 import com.example.java.vo.menus.UserVo;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
@@ -26,6 +28,7 @@ import sun.security.provider.MD5;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,6 +47,12 @@ public class LoginController {
 
     @Autowired
     private MenuMapper menuMapper;
+
+    @Autowired
+    private RoleButtonsMapper roleButtonsMapper;
+
+    @Autowired
+    IMenuService iMenuService;
 
     @ApiModelProperty(value = "用户相关信息")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -76,7 +85,7 @@ public class LoginController {
     @GetMapping("/info")
     public Result info(String token) {
         String username = JwtUtils.getClaimsByToken(token).getSubject();
-        Map<String,Object> map = (Map)JwtUtils.getClaimsByToken(token);
+        Map<String, Object> map = (Map) JwtUtils.getClaimsByToken(token);
         return Result.ok().data("name", username).data("avatar", map.get("avatar"));
     }
 
@@ -88,21 +97,13 @@ public class LoginController {
      */
     @RequestMapping(value = "/nav", method = RequestMethod.POST)
     public Result nav(HttpServletRequest request) {
+        // 登录之后获取用户的ID
         String xtoken = request.getHeader("X-Token");
         String userId = JwtUtils.getClaimsByToken(xtoken).getId();
+        // 获取出来用户所有信息
         User userInfo = userMapper.selectById(Integer.parseInt(userId));
-        QueryWrapper<RoleMenus> queryWrapper = new QueryWrapper<RoleMenus>();
-        queryWrapper.eq("roleId", userInfo.getRoleId());
-        List<RoleMenus> rolemenusList = rolemenusMapper.selectList(queryWrapper);
-        List<Integer> menuIds = rolemenusList.stream().map(
-                i -> {
-                    return i.getMenuId();
-                }
-        ).collect(Collectors.toList());
-        if(menuIds.size() != 0){
-            List<Menu> menuList = menuMapper.selectBatchIds(menuIds);
-            userInfo.setMenuList(menuList);
-        }
+
+        userInfo.setMenusList(iMenuService.getRoleMenuButtons(userInfo));
         return Result.ok().data("data", userInfo);
     }
 

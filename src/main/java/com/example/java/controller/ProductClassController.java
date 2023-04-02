@@ -4,6 +4,7 @@ package com.example.java.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.example.java.entity.News;
 import com.example.java.entity.Productclass;
 import com.example.java.mapper.ProductclassMapper;
@@ -65,17 +66,17 @@ public class ProductClassController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public Result dataInsert(@RequestBody ProductClassVo productClassVo) {
 
-        Productclass resultClass = this.convClassify(productClassVo);
         Productclass productclass = new Productclass();
+        // 拷贝内容
         BeanUtils.copyProperties(productClassVo, productclass);
-
-        productclass.setClasspower(resultClass.getClasspower());  // 分类编码
-        productclass.setDepth(resultClass.getDepth()); // 分类深度
-        productclass.setRootid(resultClass.getRootid()); // 上一级ID 0 根
-        productclass.setClassid(null);
-
-        int insertId = productclassMapper.insert(productclass);
-        return Result.ok().data("insertId", insertId);
+        // 获取 classpower depth rootid
+        Productclass p = iProductclassService.returnClassifyInfo(productclass);
+        // 赋值 classpower depth rootid
+        productclass.setClasspower(p.getClasspower());
+        productclass.setRootid(p.getRootid());
+        productclass.setDepth(p.getDepth());
+        productclassMapper.insert(productclass);
+        return Result.ok().data("insertId", productclass);
     }
 
     /**
@@ -148,7 +149,7 @@ public class ProductClassController {
      * 获取ClassPower
      *
      * @param code
-     * @return
+     * @return 1
      */
     public String getClassPower(String pwCode) {
         DecimalFormat decimalFormat = new DecimalFormat(this.classPower);
@@ -176,48 +177,33 @@ public class ProductClassController {
      */
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
     public Result dataModify(@RequestBody ProductClassVo productClassVo, HttpServletRequest request) {
-
-
         Productclass productclass = new Productclass();
-        QueryWrapper<Productclass> queryWrapper = new QueryWrapper<Productclass>();
-        queryWrapper.eq("classid", productClassVo.getClassid());
+        BeanUtils.copyProperties(productClassVo, productclass);// 复制
 
-        BeanUtils.copyProperties(productClassVo, productclass); // 开始复制内容
-        Productclass resultClass = this.convClassify(productClassVo);
-        productclass.setClasspower(resultClass.getClasspower()); // 新的classpower
-        productclass.setDepth(resultClass.getDepth()); // 新 deepth
-        productclass.setRootid(resultClass.getRootid()); // 新 rootid
-
-        Productclass vo = productclassMapper.selectOne(
-                new QueryWrapper<Productclass>().eq("classid", productClassVo.getClassid())
-        );
-
-        List<Productclass> childrenList = productclassMapper.selectList(
-                new QueryWrapper<Productclass>()
-                        .likeRight("classpower", vo.getClasspower())
-                        .ne("classid", vo.getClassid())
-        );
-        // 修改选中的数据
-        int insertId = productclassMapper.update(productclass, queryWrapper);
-        // 如果分类种存在数据
-        for (int i = 0; i < childrenList.size(); i++) {
-            Productclass listItemData = childrenList.get(i);
-
-            ProductClassVo pvo = new ProductClassVo();
-            pvo.setRootid(listItemData.getRootid());
-            pvo.setClasspower(listItemData.getClasspower());
-            pvo.setDepth(listItemData.getDepth());
-            resultClass = this.convClassify(pvo);
-
-            BeanUtils.copyProperties(listItemData, productclass);
-            productclass.setClasspower(resultClass.getClasspower()); // 新的classpower
-            productclass.setDepth(resultClass.getDepth()); // 新 deepth
-            productclass.setRootid(resultClass.getRootid()); // 新 rootid
-
-            productclassMapper.update(productclass, new QueryWrapper<Productclass>().eq("classid",listItemData.getClassid()));
+        // 当前修改信息的数据库数据
+        Productclass dataInfo = productclassMapper.selectOne(new QueryWrapper<Productclass>().eq("classid", productClassVo.getClassid()));
+        // 如果相等则指修改数据信息不涉及分类信息
+        if (dataInfo.getRootid() == productClassVo.getRootid()) {
+            productclassMapper.update(productclass, new QueryWrapper<Productclass>().eq("classid", productclass.getClassid()));
+        } else {
+            // 查询 当前分类下是否还有其他分类
+            List<Productclass> modifySubList = productclassMapper.selectList(
+                    new QueryWrapper<Productclass>()
+                            .orderByAsc("classpower")
+                            .likeRight("classpower", dataInfo.getClasspower()));
+            // 修改当前分类下存在其他分类则一起改变分类规则
+            if (modifySubList.size() != 0) {
+                Integer rootId = productClassVo.getRootid();
+                for (Productclass pItem : modifySubList) {
+                    pItem.setRootid(rootId);
+                    //获取 classpower rootId depth
+                    Productclass updateData = iProductclassService.returnClassifyInfo(pItem);
+                    productclassMapper.update(updateData, new QueryWrapper<Productclass>().eq("classid", updateData.getClassid()));
+                    rootId = updateData.getClassid();
+                }
+            }
         }
-
-        return Result.ok().data("data", insertId);
+        return Result.ok().data("data", "ok");
 
     }
 

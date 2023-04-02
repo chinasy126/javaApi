@@ -51,7 +51,8 @@ public class User {
 
     @TableField(exist = false)
     @ApiModelProperty(value = "用户菜单列表")
-    private List<Menu> menuList;
+    private List<Menu> menusList;
+    //  private List<RoleMenus> menusList;
 
     @ApiModelProperty(value = "用户头像")
     private String avatar;
