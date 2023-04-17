@@ -20,11 +20,13 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import sun.security.provider.MD5;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -113,8 +115,19 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public Result logout() {
-        return Result.ok();
+    public Result logout(HttpServletRequest request, HttpServletResponse response) {
+        // 删除包含 JWT 的 Cookie
+        Cookie cookie = new Cookie("jwt", "");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        // 删除 Authorization 头
+        response.setHeader("Authorization", "");
+
+        // 返回注销成功的响应
+        response.setStatus(HttpStatus.OK.value());
+        return Result.ok().data("msg","ok").message("退出成功!");
     }
 
 

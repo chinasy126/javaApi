@@ -6,13 +6,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.java.entity.User;
 import com.example.java.mapper.UserMapper;
 import com.example.java.service.permission.IUserService;
+import com.example.java.utils.JwtUtils;
 import com.example.java.utils.MD5Util;
 import com.example.java.utils.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -90,4 +95,31 @@ public class UserController {
         return Result.ok().data("data", updateId);
 
     }
+
+    @RequestMapping(value = "/compasssame", method = RequestMethod.POST)
+    public Result comPassSame(@RequestBody User user, HttpServletRequest request) {
+        String token = request.getHeader("X-Token");
+        String userId = JwtUtils.getClaimsByToken(token).getId();
+        // 获取出来用户所有信息
+        User userInfo = userMapper.selectById(Integer.parseInt(userId));
+        String newPassword = MD5Util.MD5Encode(user.getPassword(), "UTF-8");
+        if (userInfo.getPassword().equals(newPassword)) {
+            return Result.ok().message("旧密码输入正确!");
+        } else {
+            return Result.error().message("旧密码输入错误!");
+        }
+
+    }
+
+    @RequestMapping(value = "/updatepassword", method = RequestMethod.POST)
+    public Result updatePassword(@RequestBody User user, HttpServletRequest request) {
+        String token = request.getHeader("X-Token");
+        String userId = JwtUtils.getClaimsByToken(token).getId();
+        String password = MD5Util.MD5Encode(user.getPassword(), "UTF-8");
+        user.setPassword(password);
+        int updatePwd = userMapper.update(user, new QueryWrapper<User>().eq("id", userId));
+        return Result.ok().message("密码修改成功");
+    }
+
+
 }

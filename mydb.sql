@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2023-03-12 16:07:37
+Date: 2023-04-18 07:25:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1862,20 +1862,20 @@ CREATE TABLE `menu` (
   `menuOrder` int(11) DEFAULT '0',
   `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=242 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES ('233', '系统管理', 'permission', '0', null, '0', 'el-icon-s-help');
-INSERT INTO `menu` VALUES ('234', '菜单管理', 'menu', '233', null, '0', 'form');
-INSERT INTO `menu` VALUES ('235', '角色管理', 'role', '233', null, '0', 'form');
-INSERT INTO `menu` VALUES ('236', '用户管理', 'user', '233', null, '0', 'form');
-INSERT INTO `menu` VALUES ('237', '新闻', 'news', '0', null, '1', 'el-icon-s-help');
-INSERT INTO `menu` VALUES ('238', '新闻组件', 'newsindex', '237', null, '1', 'form');
-INSERT INTO `menu` VALUES ('239', '产品', 'product', '0', null, '1', 'el-icon-s-help');
-INSERT INTO `menu` VALUES ('240', '产品分类', 'productclass', '239', null, '1', 'form');
-INSERT INTO `menu` VALUES ('241', '产品管理', 'productindex', '239', null, '3', 'form');
+INSERT INTO `menu` VALUES ('57', '新闻组件', 'newsindex', '56', null, '1', 'form');
+INSERT INTO `menu` VALUES ('58', '产品', 'product', '0', null, '1', 'el-icon-s-help');
+INSERT INTO `menu` VALUES ('59', '产品分类', 'productclass', '58', null, '1', 'form');
+INSERT INTO `menu` VALUES ('60', '产品管理', 'productindex', '58', null, '3', 'form');
+INSERT INTO `menu` VALUES ('56', '新闻', 'news', '0', null, '1', 'el-icon-s-help');
+INSERT INTO `menu` VALUES ('54', '角色管理', 'role', '52', null, '0', 'form');
+INSERT INTO `menu` VALUES ('55', '用户管理', 'user', '52', null, '0', 'form');
+INSERT INTO `menu` VALUES ('53', '菜单管理', 'menu', '52', null, '0', 'form');
+INSERT INTO `menu` VALUES ('52', '系统管理', 'permissions', '0', null, '0', 'el-icon-s-help');
 
 -- ----------------------------
 -- Table structure for `menubutton`
@@ -1894,18 +1894,31 @@ CREATE TABLE `menubutton` (
 -- ----------------------------
 -- Records of menubutton
 -- ----------------------------
-INSERT INTO `menubutton` VALUES ('1634825970374451201', '238', '2023-03-12', null, 'add', '添加');
-INSERT INTO `menubutton` VALUES ('1634825970374451202', '238', '2023-03-12', null, 'import', '导入');
-INSERT INTO `menubutton` VALUES ('1634825970374451203', '238', '2023-03-12', null, 'export', '导出');
-INSERT INTO `menubutton` VALUES ('1634825970374451204', '238', '2023-03-12', null, 'edit', '编辑');
-INSERT INTO `menubutton` VALUES ('1634825970374451205', '238', '2023-03-12', null, 'delete', '删除');
-INSERT INTO `menubutton` VALUES ('1634825970374451206', '238', '2023-03-12', null, 'batchDeletion', '批量删除');
-INSERT INTO `menubutton` VALUES ('1634825970374451207', '240', '2023-03-12', null, 'add', '添加');
-INSERT INTO `menubutton` VALUES ('1634825970374451208', '240', '2023-03-12', null, 'edit', '编辑');
-INSERT INTO `menubutton` VALUES ('1634825970374451209', '240', '2023-03-12', null, 'delete', '删除');
-INSERT INTO `menubutton` VALUES ('1634825970441560066', '241', '2023-03-12', null, 'add', '添加');
-INSERT INTO `menubutton` VALUES ('1634825970441560067', '241', '2023-03-12', null, 'edit', '编辑');
-INSERT INTO `menubutton` VALUES ('1634825970441560068', '241', '2023-03-12', null, 'delete', '删除');
+INSERT INTO `menubutton` VALUES ('5330687273681156', '60', '2023-04-14', '2023-04-14', 'delete', '删除');
+INSERT INTO `menubutton` VALUES ('5330687273683574', '60', '2023-04-14', '2023-04-14', 'edit', '编辑');
+INSERT INTO `menubutton` VALUES ('5330687273680298', '60', '2023-04-14', '2023-04-14', 'add', '添加');
+INSERT INTO `menubutton` VALUES ('5330687273680333', '59', '2023-04-14', '2023-04-14', 'delete', '删除');
+INSERT INTO `menubutton` VALUES ('5330687273674308', '59', '2023-04-14', '2023-04-14', 'edit', '编辑');
+INSERT INTO `menubutton` VALUES ('5330687273676354', '59', '2023-04-14', '2023-04-14', 'add', '添加');
+INSERT INTO `menubutton` VALUES ('5330687273669122', '57', '2023-04-14', '2023-04-14', 'batchDeletion', '批量删除');
+INSERT INTO `menubutton` VALUES ('5330687273668666', '57', '2023-04-14', '2023-04-14', 'delete', '删除');
+INSERT INTO `menubutton` VALUES ('5330687273666989', '57', '2023-04-14', '2023-04-14', 'edit', '编辑');
+INSERT INTO `menubutton` VALUES ('5330687273666890', '57', '2023-04-14', '2023-04-14', 'export', '导出');
+INSERT INTO `menubutton` VALUES ('5330687273667160', '57', '2023-04-14', '2023-04-14', 'import', '导入');
+INSERT INTO `menubutton` VALUES ('5330687273658742', '55', '2023-04-14', '2023-04-14', 'edit', '编辑');
+INSERT INTO `menubutton` VALUES ('5330687273656407', '55', '2023-04-14', '2023-04-14', 'delete', '删除');
+INSERT INTO `menubutton` VALUES ('5330687273662654', '57', '2023-04-14', '2023-04-14', 'add', '添加');
+INSERT INTO `menubutton` VALUES ('5330687273659062', '55', '2023-04-14', '2023-04-14', 'batchDelete', '批量删除');
+INSERT INTO `menubutton` VALUES ('5330687273655763', '55', '2023-04-14', '2023-04-14', 'add', '新增');
+INSERT INTO `menubutton` VALUES ('5330687273650163', '54', '2023-04-14', '2023-04-14', 'delete', '删除');
+INSERT INTO `menubutton` VALUES ('5330687273650596', '54', '2023-04-14', '2023-04-14', 'edit', '编辑');
+INSERT INTO `menubutton` VALUES ('5330687273650514', '54', '2023-04-14', '2023-04-14', 'add', '新增');
+INSERT INTO `menubutton` VALUES ('5330687273648052', '53', '2023-04-14', '2023-04-14', 'batchSync', '批量同步');
+INSERT INTO `menubutton` VALUES ('5330687273643939', '53', '2023-04-14', '2023-04-14', 'batchDelete', '批量删除');
+INSERT INTO `menubutton` VALUES ('5330687273642178', '53', '2023-04-14', '2023-04-14', 'addButton', '新增按钮');
+INSERT INTO `menubutton` VALUES ('5330687273643551', '53', '2023-04-14', '2023-04-14', 'addMenu', '新增菜单');
+INSERT INTO `menubutton` VALUES ('5330687273636527', '53', '2023-04-14', '2023-04-14', 'delete', '删除');
+INSERT INTO `menubutton` VALUES ('5330687273631946', '53', '2023-04-14', '2023-04-14', 'edit', '编辑');
 
 -- ----------------------------
 -- Table structure for `news`
@@ -1926,7 +1939,7 @@ CREATE TABLE `news` (
   `webkey` varchar(160) DEFAULT NULL COMMENT '网页关键词',
   `webdes` varchar(200) DEFAULT NULL COMMENT '网页描述',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21954 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=21972 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of news
@@ -23754,7 +23767,19 @@ INSERT INTO `news` VALUES ('21949', '312', '1', null, null, '123', null, '123', 
 INSERT INTO `news` VALUES ('21950', '312', '1', null, null, '123', null, '123', '123', '1', '1', '1', '1');
 INSERT INTO `news` VALUES ('21951', '312', '1', null, null, '123', null, '123', '123', '1', '1', '1', '1');
 INSERT INTO `news` VALUES ('21952', '312请问', '1', null, null, '123', null, '123', '123', '1', '1', '1', '1');
-INSERT INTO `news` VALUES ('21953', '轻微的轻微的确定', '轻微的轻微的', 'news/202301/58d426c5-69d3-441c-aa12-0e4892d09061.jpg', null, null, null, '1', '1', '1', null, null, null);
+INSERT INTO `news` VALUES ('21953', '轻微的轻微的确定123', '轻微的轻微的', 'news/202301/58d426c5-69d3-441c-aa12-0e4892d09061.jpg', null, null, '2023-04-05', '1', '1', '1', null, null, null);
+INSERT INTO `news` VALUES ('21954', '222222222222222', '22222222222', '', null, null, '2023-04-05', '1', '1', null, null, null, null);
+INSERT INTO `news` VALUES ('21955', 'wqdwqd', 'qwdqwd', 'news/202301/58d426c5-69d3-441c-aa12-0e4892d09061.jpg', null, null, '2023-04-05', '0', '0', '1', '2', '3', '4');
+INSERT INTO `news` VALUES ('21958', '222222222222220', '22222222222', null, null, null, null, '1', '1', null, null, null, null);
+INSERT INTO `news` VALUES ('21959', 'wqdwqd', 'qwdqwd', 'news/202301/58d426c5-69d3-441c-aa12-0e4892d09061.jpg', null, null, null, '0', '0', '1', '2', '3', '4');
+INSERT INTO `news` VALUES ('21960', '2.2222222222222E+14', '22222222222', null, null, null, null, '1', '1', null, null, null, null);
+INSERT INTO `news` VALUES ('21961', '2wq3dwqd213123', 'qwdqwd', 'news/202301/58d426c5-69d3-441c-aa12-0e4892d09061.jpg', null, null, null, '0', '0', '1', '2', '3', '4');
+INSERT INTO `news` VALUES ('21962', '2.2222222222222E+14', '22222222222', null, null, null, null, '1', '1', null, null, null, null);
+INSERT INTO `news` VALUES ('21963', '灌灌灌灌灌', 'qwdqwd', 'news/202301/58d426c5-69d3-441c-aa12-0e4892d09061.jpg', null, null, null, '0', '0', '1', '2', '3', '4');
+INSERT INTO `news` VALUES ('21964', '222222222222220', '22222222222', null, null, null, null, '1', '1', null, null, null, null);
+INSERT INTO `news` VALUES ('21965', '灌灌灌灌灌', 'qwdqwd', 'news/202301/58d426c5-69d3-441c-aa12-0e4892d09061.jpg', null, null, null, '0', '0', '1', '2', '3', '4');
+INSERT INTO `news` VALUES ('21966', '222222222222220', '22222222222', null, null, null, null, '1', '1', null, null, null, null);
+INSERT INTO `news` VALUES ('21967', '1灌灌灌灌灌', 'qwdqwd', '/public/uploads/20230417/dd97a98937c2c8a3cafd91369ea32561.jpg', null, null, '2023-04-22', '0', '0', '1', '2', '3', '4');
 
 -- ----------------------------
 -- Table structure for `product`
@@ -23765,7 +23790,7 @@ CREATE TABLE `product` (
   `pid` int(11) DEFAULT '0',
   `name` varchar(100) DEFAULT NULL,
   `title` varchar(200) DEFAULT NULL,
-  `pic` varchar(60) DEFAULT NULL,
+  `pic` varchar(255) DEFAULT NULL,
   `contents` text,
   `num` int(11) NOT NULL DEFAULT '0',
   `top` int(11) NOT NULL DEFAULT '0',
@@ -23775,7 +23800,7 @@ CREATE TABLE `product` (
   `webkey` varchar(160) DEFAULT NULL COMMENT '网页关键词',
   `webdes` varchar(200) DEFAULT NULL COMMENT '网页描述',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of product
@@ -23784,7 +23809,7 @@ INSERT INTO `product` VALUES ('1', '1', '周鸿', null, null, null, '2', '0', '0
 INSERT INTO `product` VALUES ('2', '1', '百度影棒：互联网再造电视，也许可以更轻量', null, null, null, '4', '0', '0', null, null, null, null);
 INSERT INTO `product` VALUES ('3', '1', '从58同城看本地服务业中间页的前景', null, './Public/upload/newspic/201309/137993979259388.jpg', null, '10', '0', '0', null, null, null, null);
 INSERT INTO `product` VALUES ('4', '1', '百度如何判断一篇文章的主题', null, './Public/upload/newspic/201309/1379939880693695.jpg', null, '12', '0', '0', null, null, null, null);
-INSERT INTO `product` VALUES ('5', '1', '根据搜索者意图划分关键词三大类型', null, './Public/upload/newspic/201309/137994003173517.jpg', null, '5', '0', '0', null, null, null, null);
+INSERT INTO `product` VALUES ('5', '1', '根据搜索者意图划分关键词三大类型', null, '/public/uploads/20230417/8b352deb6d82b6f3d768ffa2beffa9f1.jpg', '<p><img src=\"http://localhost:82//public/uploads/20230417/5e9c3f1a64a9fec6abb9012f9a9cc406.png\"></p>', '5', '0', '0', null, null, null, null);
 INSERT INTO `product` VALUES ('6', '1', '360第三代搜索引擎技术发布···全民投票···社交化', null, null, null, '5', '0', '0', null, null, null, null);
 INSERT INTO `product` VALUES ('7', '1', '2013胡润IT富豪榜公布 马化腾560亿元成新首富', null, './Public/upload/newspic/201309/1379941379338806.jpg', null, '22', '0', '0', null, null, null, null);
 INSERT INTO `product` VALUES ('8', '1', '谷歌董事长施密特：大学教育重要性无可替代', null, './Public/upload/newspic/201309/1379942863185730.jpg', null, '5', '0', '0', null, null, null, null);
@@ -23804,10 +23829,12 @@ INSERT INTO `product` VALUES ('35', '1', '阿斯蒂芬2222', null, null, '', '0'
 INSERT INTO `product` VALUES ('37', '3', '阿斯蒂芬1', null, null, '阿斯蒂芬阿斯蒂芬', '0', '0', null, '1', null, null, null);
 INSERT INTO `product` VALUES ('38', '1', '123', null, 'product/202301/91f49362-b4a3-4c36-81cd-e95af6b24ba5.png', '123', '0', '0', null, '1', null, null, null);
 INSERT INTO `product` VALUES ('39', '3', '11', null, 'product/202301/2cba79f9-61d9-4e54-847e-870387152e27.jpg', '1', '0', '0', null, '1', null, null, null);
-INSERT INTO `product` VALUES ('40', '171', 'e', null, '', 'rer', '0', '0', null, '1', null, null, null);
+INSERT INTO `product` VALUES ('40', '171', 'e', null, '', '<p>rer阿斯蒂芬阿<img src=\"/public/uploads/20230417/795c2770980602fd6e3fade4a2be6849.jpg\">斯蒂芬阿斯蒂阿斯11 <img src=\"/public/uploads/20230417/9f27f35393d50c14a76ae078efe19501.png\">蒂芬撒地方芬阿斯蒂芬阿斯蒂芬阿斯蒂芬</p>', '0', '0', null, '1', null, null, null);
 INSERT INTO `product` VALUES ('41', '1', '123123123', null, '', '123123123', '0', '0', null, '1', null, null, null);
 INSERT INTO `product` VALUES ('42', '1', 'sdsdfsdff', null, '', '<p>e<strong>wrwerqr<span class=\"ql-cursor\">﻿</span></strong></p>', '0', '0', null, '1', null, null, null);
-INSERT INTO `product` VALUES ('44', '1', '二二', null, '202302/13eb772c-00b0-4e15-9e76-8be5c293a606.jpeg', null, '1', '1', null, '1', null, null, null);
+INSERT INTO `product` VALUES ('44', '1', '二二', null, '202302/13eb772c-00b0-4e15-9e76-8be5c293a606.jpeg', '<p>阿斯 <img src=\"/public/uploads/20230417/af11582c676b6007b9fc47d60b17136b.png\"></p>', '1', '1', null, '1', null, null, null);
+INSERT INTO `product` VALUES ('45', '1', '1123213', null, '/public/uploads/20230415/28a54bd6e0e61d02bb6c458f05cf2a3d.jpg', '<p><img src=\"/public/uploads/20230417/fc1684af557c7eadc34be9d95bd768ef.jpg\"></p>', '1', '1', null, null, null, null, null);
+INSERT INTO `product` VALUES ('47', '3', '234234', null, '', '<p>dfgdfgdfgdfgdfg<img src=\"http://localhost:82//public/uploads/20230416/d3d951dc247b36369c6bf4aedeaee085.png\"><img src=\"http://localhost:82//public/uploads/20230416/8ebbdfd044c606d7c4e96d2e92b92f55.jpg\"></p>', '0', '0', null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `productclass`
@@ -23822,14 +23849,14 @@ CREATE TABLE `productclass` (
   `classcontents` varchar(500) DEFAULT NULL,
   `classpic` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`classid`)
-) ENGINE=MyISAM AUTO_INCREMENT=175 DEFAULT CHARSET=utf8 COMMENT='产品分类';
+) ENGINE=MyISAM AUTO_INCREMENT=235 DEFAULT CHARSET=utf8 COMMENT='产品分类';
 
 -- ----------------------------
 -- Records of productclass
 -- ----------------------------
-INSERT INTO `productclass` VALUES ('1', '安全安保', '0001', '4', '0', '222', '');
+INSERT INTO `productclass` VALUES ('1', '安全安保', '0001', '4', '0', '222213123', '/public/uploads/20230415/9eecfb8843137b13b1f8b6254fdfbb97.jpg');
 INSERT INTO `productclass` VALUES ('158', '1111', '000300010002', '12', '148', '22222222222222', 'productclass/202301/57b5976c-f6cc-48e0-a07c-80e8d325ceed.jpg');
-INSERT INTO `productclass` VALUES ('169', '22', '0003000100020001', '16', '158', '22', '');
+INSERT INTO `productclass` VALUES ('169', '22', '0003000100020001', '16', '0', '22', '/public/uploads/20230415/9eecfb8843137b13b1f8b6254fdfbb97.jpg');
 INSERT INTO `productclass` VALUES ('170', '33', '00030001000200010001', '20', '169', '33', '');
 INSERT INTO `productclass` VALUES ('3', '电脑硬件', '0003', '4', '0', '', '');
 INSERT INTO `productclass` VALUES ('148', '硬件第一个分类', '00030001', '8', '3', '1111111111', '');
@@ -23848,7 +23875,7 @@ CREATE TABLE `role` (
   `roleDesc` varchar(255) DEFAULT NULL COMMENT '角色描述',
   `roleMenus` text COMMENT '角色权限',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of role
@@ -23857,7 +23884,7 @@ INSERT INTO `role` VALUES ('4', '管理员', '管理员描述', null);
 INSERT INTO `role` VALUES ('5', '访客', '访客描述', null);
 INSERT INTO `role` VALUES ('35', '1111', '222', null);
 INSERT INTO `role` VALUES ('36', '1', '2', null);
-INSERT INTO `role` VALUES ('57', '3e3e', 'e3e3', null);
+INSERT INTO `role` VALUES ('57', '3ewwwww', 'e3e3', null);
 INSERT INTO `role` VALUES ('39', 'ffff', 'fff', null);
 INSERT INTO `role` VALUES ('47', '的说法', '撒地方', null);
 INSERT INTO `role` VALUES ('48', '的说法', '撒地方', null);
@@ -23865,91 +23892,51 @@ INSERT INTO `role` VALUES ('50', '23123', '123123123', null);
 INSERT INTO `role` VALUES ('51', '23123', '123123123', null);
 INSERT INTO `role` VALUES ('52', '23123', '123123123', null);
 INSERT INTO `role` VALUES ('53', '23123', '123123123', null);
-INSERT INTO `role` VALUES ('58', 'asfasdf', 'sadfsadf', null);
+INSERT INTO `role` VALUES ('58', '1ee11asfasdf', 'sadfsadf', null);
+INSERT INTO `role` VALUES ('60', '12', '22', '');
 
 -- ----------------------------
 -- Table structure for `rolebuttons`
 -- ----------------------------
 DROP TABLE IF EXISTS `rolebuttons`;
 CREATE TABLE `rolebuttons` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `roleMenuId` bigint(20) DEFAULT NULL COMMENT '关联ID，角色属于菜单ID',
   `buttonName` varchar(255) DEFAULT NULL COMMENT '按钮中文名称',
   `buttonType` varchar(255) DEFAULT NULL COMMENT '按钮英文类型便于匹配是否有权限',
   `roleId` int(11) DEFAULT NULL,
   `menuId` int(11) NOT NULL COMMENT '菜单真实ID',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5457532713990881416 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of rolebuttons
 -- ----------------------------
-INSERT INTO `rolebuttons` VALUES ('1634825274291953665', '352', '添加', 'add', '36', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825274291953666', '352', '导入', 'import', '36', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825274291953667', '352', '导出', 'export', '36', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825274291953668', '352', '编辑', 'edit', '36', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825274342285313', '352', '删除', 'delete', '36', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825274342285314', '352', '批量删除', 'batchDeletion', '36', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825274342285315', '354', '添加', 'add', '36', '231');
-INSERT INTO `rolebuttons` VALUES ('1634825274409394178', '354', '编辑', 'edit', '36', '231');
-INSERT INTO `rolebuttons` VALUES ('1634825274409394179', '354', '删除', 'delete', '36', '231');
-INSERT INTO `rolebuttons` VALUES ('1634825274409394180', '355', '添加', 'add', '36', '232');
-INSERT INTO `rolebuttons` VALUES ('1634825274409394181', '355', '编辑', 'edit', '36', '232');
-INSERT INTO `rolebuttons` VALUES ('1634825274409394182', '355', '删除', 'delete', '36', '232');
-INSERT INTO `rolebuttons` VALUES ('1634825366382092289', '357', '添加', 'add', '54', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366382092290', '357', '导入', 'import', '54', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366382092291', '359', '添加', 'add', '55', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366382092292', '357', '导出', 'export', '54', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366382092293', '359', '导入', 'import', '55', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366382092294', '359', '导出', 'export', '55', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366415646721', '357', '编辑', 'edit', '54', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366415646722', '359', '编辑', 'edit', '55', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366415646723', '357', '删除', 'delete', '54', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366415646724', '359', '删除', 'delete', '55', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366415646725', '357', '批量删除', 'batchDeletion', '54', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825366415646726', '359', '批量删除', 'batchDeletion', '55', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825376922378242', '361', '添加', 'add', '56', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825376922378243', '361', '导入', 'import', '56', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825376922378244', '361', '导出', 'export', '56', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825376922378245', '361', '编辑', 'edit', '56', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825376922378246', '361', '删除', 'delete', '56', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825376922378247', '361', '批量删除', 'batchDeletion', '56', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825445159510017', '363', '添加', 'add', '57', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825445159510018', '363', '导入', 'import', '57', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825445159510019', '363', '导出', 'export', '57', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825445159510020', '363', '编辑', 'edit', '57', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825445159510021', '363', '删除', 'delete', '57', '229');
-INSERT INTO `rolebuttons` VALUES ('1634825445159510022', '363', '批量删除', 'batchDeletion', '57', '229');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107399', '382', '批量删除', 'batchDeletion', '58', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107398', '382', '删除', 'delete', '58', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107397', '382', '编辑', 'edit', '58', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107396', '382', '导出', 'export', '58', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107395', '382', '导入', 'import', '58', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107394', '382', '添加', 'add', '58', '238');
-INSERT INTO `rolebuttons` VALUES ('1634826044877873155', '380', '删除', 'delete', '4', '241');
-INSERT INTO `rolebuttons` VALUES ('1634826044877873154', '380', '编辑', 'edit', '4', '241');
-INSERT INTO `rolebuttons` VALUES ('1634826044877873153', '380', '添加', 'add', '4', '241');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764298', '379', '删除', 'delete', '4', '240');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764297', '379', '编辑', 'edit', '4', '240');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764296', '379', '添加', 'add', '4', '240');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764295', '377', '批量删除', 'batchDeletion', '4', '238');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764294', '377', '删除', 'delete', '4', '238');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764293', '377', '编辑', 'edit', '4', '238');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764292', '377', '导出', 'export', '4', '238');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764291', '377', '导入', 'import', '4', '238');
-INSERT INTO `rolebuttons` VALUES ('1634826044810764290', '377', '添加', 'add', '4', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107400', '384', '添加', 'add', '58', '240');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107401', '384', '编辑', 'edit', '58', '240');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107402', '384', '删除', 'delete', '58', '240');
-INSERT INTO `rolebuttons` VALUES ('1634827608162107403', '385', '添加', 'add', '58', '241');
-INSERT INTO `rolebuttons` VALUES ('1634827608195661825', '385', '编辑', 'edit', '58', '241');
-INSERT INTO `rolebuttons` VALUES ('1634827608195661826', '385', '删除', 'delete', '58', '241');
-INSERT INTO `rolebuttons` VALUES ('1634827639686496257', '387', '添加', 'add', '5', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827639686496258', '387', '导入', 'import', '5', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827639686496259', '387', '导出', 'export', '5', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827639686496260', '387', '编辑', 'edit', '5', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827639686496261', '387', '删除', 'delete', '5', '238');
-INSERT INTO `rolebuttons` VALUES ('1634827639686496262', '387', '批量删除', 'batchDeletion', '5', '238');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881391', '493', '删除', 'delete', '4', '60');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881392', '493', '编辑', 'edit', '4', '60');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881393', '493', '添加', 'add', '4', '60');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881394', '494', '删除', 'delete', '4', '59');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881395', '494', '编辑', 'edit', '4', '59');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881396', '494', '添加', 'add', '4', '59');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881397', '496', '批量删除', 'batchDeletion', '4', '57');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881398', '496', '删除', 'delete', '4', '57');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881399', '496', '编辑', 'edit', '4', '57');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881400', '496', '导出', 'export', '4', '57');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881401', '496', '导入', 'import', '4', '57');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881402', '496', '添加', 'add', '4', '57');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881403', '498', '删除', 'delete', '4', '54');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881404', '498', '编辑', 'edit', '4', '54');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881405', '498', '新增', 'add', '4', '54');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881406', '499', '编辑', 'edit', '4', '55');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881407', '499', '删除', 'delete', '4', '55');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881408', '499', '批量删除', 'batchDelete', '4', '55');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881409', '499', '新增', 'add', '4', '55');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881410', '500', '批量同步', 'batchSync', '4', '53');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881411', '500', '批量删除', 'batchDelete', '4', '53');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881412', '500', '新增按钮', 'addButton', '4', '53');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881413', '500', '新增菜单', 'addMenu', '4', '53');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881414', '500', '删除', 'delete', '4', '53');
+INSERT INTO `rolebuttons` VALUES ('5457532713990881415', '500', '编辑', 'edit', '4', '53');
 
 -- ----------------------------
 -- Table structure for `rolemenus`
@@ -23962,34 +23949,20 @@ CREATE TABLE `rolemenus` (
   `menuTitle` varchar(255) DEFAULT NULL COMMENT '菜单名称',
   `menuButton` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=388 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=501 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of rolemenus
 -- ----------------------------
-INSERT INTO `rolemenus` VALUES ('351', '36', '228', '新闻', null);
-INSERT INTO `rolemenus` VALUES ('352', '36', '229', '新闻组件', null);
-INSERT INTO `rolemenus` VALUES ('353', '36', '230', '产品', null);
-INSERT INTO `rolemenus` VALUES ('354', '36', '231', '产品分类', null);
-INSERT INTO `rolemenus` VALUES ('355', '36', '232', '产品管理', null);
-INSERT INTO `rolemenus` VALUES ('385', '58', '241', '产品管理', null);
-INSERT INTO `rolemenus` VALUES ('384', '58', '240', '产品分类', null);
-INSERT INTO `rolemenus` VALUES ('381', '58', '237', '新闻', null);
-INSERT INTO `rolemenus` VALUES ('382', '58', '238', '新闻组件', null);
-INSERT INTO `rolemenus` VALUES ('383', '58', '239', '产品', null);
-INSERT INTO `rolemenus` VALUES ('362', '57', '228', '新闻', null);
-INSERT INTO `rolemenus` VALUES ('363', '57', '229', '新闻组件', null);
-INSERT INTO `rolemenus` VALUES ('372', '4', '233', '系统管理', null);
-INSERT INTO `rolemenus` VALUES ('373', '4', '234', '菜单管理', null);
-INSERT INTO `rolemenus` VALUES ('374', '4', '235', '角色管理', null);
-INSERT INTO `rolemenus` VALUES ('375', '4', '236', '用户管理', null);
-INSERT INTO `rolemenus` VALUES ('376', '4', '237', '新闻', null);
-INSERT INTO `rolemenus` VALUES ('377', '4', '238', '新闻组件', null);
-INSERT INTO `rolemenus` VALUES ('378', '4', '239', '产品', null);
-INSERT INTO `rolemenus` VALUES ('379', '4', '240', '产品分类', null);
-INSERT INTO `rolemenus` VALUES ('380', '4', '241', '产品管理', null);
-INSERT INTO `rolemenus` VALUES ('386', '5', '237', '新闻', null);
-INSERT INTO `rolemenus` VALUES ('387', '5', '238', '新闻组件', null);
+INSERT INTO `rolemenus` VALUES ('492', '4', '58', '产品', '');
+INSERT INTO `rolemenus` VALUES ('493', '4', '60', '产品管理', '');
+INSERT INTO `rolemenus` VALUES ('494', '4', '59', '产品分类', '');
+INSERT INTO `rolemenus` VALUES ('495', '4', '56', '新闻', '');
+INSERT INTO `rolemenus` VALUES ('496', '4', '57', '新闻组件', '');
+INSERT INTO `rolemenus` VALUES ('497', '4', '52', '系统管理', '');
+INSERT INTO `rolemenus` VALUES ('498', '4', '54', '角色管理', '');
+INSERT INTO `rolemenus` VALUES ('499', '4', '55', '用户管理', '');
+INSERT INTO `rolemenus` VALUES ('500', '4', '53', '菜单管理', '');
 
 -- ----------------------------
 -- Table structure for `table`
@@ -24062,12 +24035,12 @@ CREATE TABLE `t_user` (
   `avatar` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `username` (`username`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '2022-10-10', '4', null, '2023-01-09', '202212/3b01a8c6-aaf1-4bc3-8133-9d98c3f56974.jpg');
+INSERT INTO `t_user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '2022-10-10', '4', null, '2023-04-17', '202212/3b01a8c6-aaf1-4bc3-8133-9d98c3f56974.jpg');
 INSERT INTO `t_user` VALUES ('28', 'user', '21232f297a57a5a743894a0e4a801fc3', '2022-12-20', '5', null, '2023-01-09', null);
 INSERT INTO `t_user` VALUES ('35', '12阿斯顿法国红酒看来4人3', '321123', null, '38', null, '2023-01-09', null);
 INSERT INTO `t_user` VALUES ('36', '士大夫12sdf 3s', '321123', null, '0', null, '2023-01-09', null);
@@ -24090,6 +24063,7 @@ INSERT INTO `t_user` VALUES ('60', '1', '1', '2023-02-06', '39', '2023-02-05', '
 INSERT INTO `t_user` VALUES ('61', '1', '1', '2023-02-06', '39', '2023-02-05', '2023-02-05', null);
 INSERT INTO `t_user` VALUES ('62', '1', '1', '2023-02-06', '39', '2023-02-05', '2023-02-05', null);
 INSERT INTO `t_user` VALUES ('67', '234324e', '234234', '2023-02-06', '39', '2023-02-05', '2023-02-05', null);
+INSERT INTO `t_user` VALUES ('75', 'try', '1da33616e19f532fca9bf8e3c095d11d', '2023-04-08', '57', '2023-04-14', '2023-04-14', null);
 
 -- ----------------------------
 -- Table structure for `user`

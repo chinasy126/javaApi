@@ -49,18 +49,10 @@ public class LoginInterceptor extends R implements HandlerInterceptor {
         try {
             String username;
             username = JwtUtils.getClaimsByToken(xtoken).getSubject();
-           // System.out.println(username+"===================");
         }catch (Exception e){
             e.printStackTrace();
             return false;
         }
-
-
-//        if (token.equals("123")) {
-//            System.out.println("token验证成功");
-//            return true;
-//        }
-     //   return true;
         return true;
     }
 

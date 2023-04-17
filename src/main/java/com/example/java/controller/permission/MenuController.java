@@ -114,15 +114,17 @@ public class MenuController {
         Menu data = new Menu();
         BeanUtils.copyProperties(menusVo, data);
 
-        // 如果不为空添加二级菜单， !StringUtils.isBlank(menusVo.getParentMenu())
-        if (menusVo.getFid() != null) {
 
+        // 如果不为空添加二级菜单， !StringUtils.isBlank(menusVo.getParentMenu())
+        if (menusVo.getParentMenu() != null) {
+            Menu menu = iMenuService.getOne(new QueryWrapper<Menu>().eq("name", menusVo.getParentMenu().split(",")[1]));
 //            String[] stringList = menusVo.getParentMenu().split(",");
 //            String[] stringList = new String[0];
 //            QueryWrapper<Menu> menusVoQueryWrapper = new QueryWrapper<>();
 //            menusVoQueryWrapper.eq("name", stringList[1]).eq("fid", 0);
 //            Menu menu = menuMapper.selectOne(menusVoQueryWrapper);
 //            data.setFid(menu.getId());
+            data.setFid(menu.getId());
         } else {
             data.setFid(0);
         }
