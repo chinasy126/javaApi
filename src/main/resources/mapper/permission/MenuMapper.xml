@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.java.mapper.permission.MenuMapper">
+
+    <!-- 查询角色 -->
+    <resultMap id="selectListByPageMap" type="com.example.java.vo.menus.RoleVo">
+        <id property="id" jdbcType="INTEGER" column="id"></id>
+        <result property="roleName" jdbcType="VARCHAR" column="roleName"></result>
+        <result column="roleDesc" jdbcType="VARCHAR" property="roleDesc"></result>
+        <!-- 查询菜单 -->
+        <collection property="roleMenus" javaType="List" ofType="com.example.java.entity.permission.RoleMenus"
+                    column="{rid=id}" select="queryRoleMenusList"
+        >
+            <id column="id" jdbcType="BIGINT" property="id"/>
+        </collection>
+    </resultMap>
+    <!-- 查询菜单 -->
+    <resultMap id="BaseResultMapTwo" type="com.example.java.entity.permission.RoleMenus">
+        <id property="id" jdbcType="INTEGER" column="id"></id>
+        <result column="roleId" jdbcType="BIGINT" property="roleId"/>
+        <result column="menuId" jdbcType="BIGINT" property="menuId"/>
+        <result column="menuTitle" jdbcType="VARCHAR" property="menuTitle"/>
+        <result column="menuFid" jdbcType="BIGINT" property="menuFid"/>
+        <!-- 查询按钮 -->
+        <collection property="rolebuttonsList" javaType="List" ofType="com.example.java.entity.permission.Rolebuttons"
+                    column="{rid=id}"  select="queryRoleButtonList"
+        >
+        </collection>
+    </resultMap>
+    <!-- 查询菜单 -->
+<!--    <resultMap id="BaseResultMapThree" type="com.example.java.entity.permission.Rolebuttons">-->
+<!--        <id column="id" jdbcType="BIGINT" property="id"/>-->
+<!--        <result column="roleMenuId" jdbcType="BIGINT" property="roleMenuId"/>-->
+<!--        <result column="buttonName" jdbcType="VARCHAR" property="buttonName"/>-->
+<!--        <result column="buttonType" jdbcType="VARCHAR" property="buttonType"/>-->
+<!--    </resultMap>-->
+
+
+    <select id="queryRoleButtonList"  resultType="com.example.java.entity.permission.Rolebuttons" >
+        SELECT id,
+               roleMenuId,
+               buttonName,
+               buttonType
+        FROM rolebuttons
+        WHERE roleMenuId = #{rid}
+    </select>
+
+    <select id="queryRoleMenusList" resultMap="BaseResultMapTwo">
+        SELECT rolemenus.*,
+               menu.fid as menuFid
+        FROM rolemenus
+                 LEFT JOIN menu ON menu.id = rolemenus.menuId
+        where roleId = #{rid}
+    </select>
+
+    <select id="selectListByPage" resultMap="selectListByPageMap">
+        SELECT r.id,
+               r.roleName,
+               r.roleDesc
+        FROM `role` r
+        where 1
+        <if test="role.roleName != null ">
+            and roleName like concat('%',#{role.roleName},'%')
+        </if>
+        order BY r.id desc
+    </select>
+</mapper>

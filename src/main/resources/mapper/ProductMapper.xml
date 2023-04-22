@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.java.mapper.ProductMapper">
+    <select id="selectListByPage" resultType="com.example.java.entity.Product">
+        SELECT
+        pro.*,proclass.classname
+        FROM
+        product pro
+        LEFT JOIN productclass proclass ON pro.pid = proclass.classid
+        where 1=1
+        <if test="name != null">
+            and pro.name like CONCAT('%',#{name},'%')
+        </if>
+            order by id desc
+    </select>
+</mapper>
