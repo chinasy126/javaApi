@@ -2,6 +2,7 @@ package com.example.java.controller;
 
 import com.example.java.utils.UploadUtils;
 import com.example.java.vo.ObjectRESTResult;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,9 @@ import java.util.UUID;
 @ResponseBody
 @RequestMapping
 public class UploadController {
+
+    @Value("${build.file.prefix}")
+    private String buildFilePrefix;
 
     /**
      * 图片上传
@@ -48,8 +52,9 @@ public class UploadController {
         String data = sdf.format(dt);
 
         // 调用UploadUtils工具类将图片存放到服务器上
-        File fileDir = UploadUtils.getImgDirFile(data);
-
+       // File fileDir = UploadUtils.getImgDirFile(data);
+        UploadUtils uploadUtils = new UploadUtils();
+        File fileDir = uploadUtils.getImgDirFile(buildFilePrefix,data);
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
             imgFile.transferTo(newFile);
@@ -83,8 +88,9 @@ public class UploadController {
         String data = sdf.format(dt);
 
         // 调用UploadUtils工具类将图片存放到服务器上
-        File fileDir = UploadUtils.getImgDirFile(data);
-
+       // File fileDir = UploadUtils.getImgDirFile(data);
+        UploadUtils uploadUtils = new UploadUtils();
+        File fileDir = uploadUtils.getImgDirFile(buildFilePrefix,data);
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
             imgFile.transferTo(newFile);

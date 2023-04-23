@@ -25,6 +25,9 @@ public class ImgUploadController {
     @Value("${upload.image.prefix}")
     private String upImagePrefix;
 
+    @Value("${build.file.prefix}")
+    private String buildFilePrefix;
+
     /**
      * 图片上传
      *
@@ -56,7 +59,12 @@ public class ImgUploadController {
         }
 
         data = upImagePrefix + '/' + data;
-        File fileDir = UploadUtils.getImgDirFile(data);
+
+        //File fileDir = UploadUtils.getImgDirFile(data);
+        UploadUtils uploadUtils = new UploadUtils();
+
+        File fileDir = uploadUtils.getImgDirFile(buildFilePrefix,data);
+
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
             imgFile.transferTo(newFile);
