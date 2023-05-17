@@ -1,9 +1,11 @@
 package com.example.java.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.example.java.service.AliyunOssUploadService;
 import com.example.java.utils.Result;
 import com.example.java.utils.UploadUtils;
 import com.example.java.vo.ObjectRESTResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,8 +27,11 @@ public class ImgUploadController {
     @Value("${upload.image.prefix}")
     private String upImagePrefix;
 
-    @Value("${build.file.prefix}")
-    private String buildFilePrefix;
+//    @Value("${build.file.prefix}")
+//    private String buildFilePrefix;
+
+    @Autowired
+    private AliyunOssUploadService aliyunOssUploadService;
 
     /**
      * 图片上传
@@ -41,7 +46,7 @@ public class ImgUploadController {
                                  @RequestParam(value = "type", required = false, defaultValue = "") String type,
                                  HttpServletRequest request, HttpSession session) {
         ObjectRESTResult restResult = new ObjectRESTResult();
-        if (imgFile.isEmpty()) {
+        if (imgFile.isEmpty() ) {
             return Result.error().message("上传失败，请选择文件");
         }
         String uuid = UUID.randomUUID().toString().trim();
@@ -63,7 +68,8 @@ public class ImgUploadController {
         //File fileDir = UploadUtils.getImgDirFile(data);
         UploadUtils uploadUtils = new UploadUtils();
 
-        File fileDir = uploadUtils.getImgDirFile(buildFilePrefix,data);
+//        File fileDir = uploadUtils.getImgDirFile(buildFilePrefix,data);
+        File fileDir = uploadUtils.getImgDirFile(data);
 
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
@@ -73,5 +79,22 @@ public class ImgUploadController {
         }
         return Result.ok().data("file", data + '/' + fileNames);
     }
+
+    /**
+     * 阿里云oss
+     * @param imgFile
+     * @param type
+     * @param request
+     * @param session
+     * @return
+     */
+    public Result ossUploadPictures(@RequestParam("file") MultipartFile imgFile,
+                                 @RequestParam(value = "type", required = false, defaultValue = "") String type,
+                                 HttpServletRequest request, HttpSession session){
+        String fileNames = aliyunOssUploadService.upload(imgFile);
+        return Result.ok().data("file", fileNames);
+    }
+
+
 
 }

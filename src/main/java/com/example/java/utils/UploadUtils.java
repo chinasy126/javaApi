@@ -30,15 +30,14 @@ public class UploadUtils {
         return fileDir;
     }
 
-    public File getImgDirFile(String path,String data){
-        String fileDirPath = new String(path + "/" + data);
+    public File getImgDirFile(String data) {
+        String fileDirPath = new String(data);
         File fileDir = new File(fileDirPath);
         if (!fileDir.exists()) {
             fileDir.mkdirs();
         }
         return fileDir;
     }
-
 
 
 }

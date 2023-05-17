@@ -54,7 +54,7 @@ public class UploadController {
         // 调用UploadUtils工具类将图片存放到服务器上
        // File fileDir = UploadUtils.getImgDirFile(data);
         UploadUtils uploadUtils = new UploadUtils();
-        File fileDir = uploadUtils.getImgDirFile(buildFilePrefix,data);
+        File fileDir = uploadUtils.getImgDirFile(data);
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
             imgFile.transferTo(newFile);
@@ -90,7 +90,7 @@ public class UploadController {
         // 调用UploadUtils工具类将图片存放到服务器上
        // File fileDir = UploadUtils.getImgDirFile(data);
         UploadUtils uploadUtils = new UploadUtils();
-        File fileDir = uploadUtils.getImgDirFile(buildFilePrefix,data);
+        File fileDir = uploadUtils.getImgDirFile(data);
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
             imgFile.transferTo(newFile);
