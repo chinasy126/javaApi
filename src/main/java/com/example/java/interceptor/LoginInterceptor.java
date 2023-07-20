@@ -31,7 +31,11 @@ public class LoginInterceptor extends R implements HandlerInterceptor {
         String path = request.getServletPath();
 
         String xtoken = request.getHeader("X-Token");
+<<<<<<< HEAD
         System.out.println("访问前拦截请求，从请求头中获取token ---> " + xtoken);
+=======
+//        System.out.println("访问前拦截请求，从请求头中获取token ---> " + xtoken);
+>>>>>>> master
 
         List<String> asList = Arrays.asList("/user/login" , "/image/**");
 

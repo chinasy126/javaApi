@@ -1,5 +1,9 @@
 package com.example.java.controller;
 
+<<<<<<< HEAD
+=======
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+>>>>>>> master
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.java.entity.News;
@@ -10,10 +14,14 @@ import com.example.java.mapper.permission.MenuMapper;
 import com.example.java.mapper.permission.RoleButtonsMapper;
 import com.example.java.mapper.permission.RolemenusMapper;
 import com.example.java.service.permission.IMenuService;
+<<<<<<< HEAD
 import com.example.java.utils.JwtUtils;
 import com.example.java.utils.MD5Util;
 import com.example.java.utils.RandomValidateCodeUtil;
 import com.example.java.utils.Result;
+=======
+import com.example.java.utils.*;
+>>>>>>> master
 import com.example.java.vo.menus.MenusVo;
 import com.example.java.vo.menus.UserVo;
 import io.swagger.annotations.ApiModelProperty;
@@ -86,9 +94,18 @@ public class LoginController {
     @ApiModelProperty(value = "登录后获取用户信息")
     @GetMapping("/info")
     public Result info(String token) {
+<<<<<<< HEAD
         String username = JwtUtils.getClaimsByToken(token).getSubject();
         Map<String, Object> map = (Map) JwtUtils.getClaimsByToken(token);
         return Result.ok().data("name", username).data("avatar", map.get("avatar"));
+=======
+        //String username = JwtUtils.getClaimsByToken(token).getSubject();
+        //Map<String, Object> map = (Map) JwtUtils.getClaimsByToken(token);
+        String userId = JwtUtils.getClaimsByToken(token).getId();
+        User user = userMapper.selectOne(new QueryWrapper<User>().eq("id",userId));
+
+        return Result.ok().data("name", user.getUsername()).data("avatar", user.getAvatar());
+>>>>>>> master
     }
 
     /**

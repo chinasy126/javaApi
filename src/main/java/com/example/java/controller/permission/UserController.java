@@ -39,9 +39,32 @@ public class UserController {
 
     @RequestMapping(value = "/insertOrUpdate", method = RequestMethod.POST)
     public Result insertOrUpdate(@RequestBody User user) {
+<<<<<<< HEAD
         Boolean b = iUserService.saveOrUpdate(user);
 
         return Result.ok().data("data", b);
+=======
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",user.getUsername());
+
+        if(user.getId() != 0){
+            user.setPassword(MD5Util.MD5Encode(user.getPassword(), "UTF-8"));
+            Boolean b = iUserService.saveOrUpdate(user);
+            return Result.ok().data("data", b);
+        }else {
+            User user1 = new User();
+            user1 = userMapper.selectOne(queryWrapper);
+            if (user1 == null) {
+                user.setPassword(MD5Util.MD5Encode(user.getPassword(), "UTF-8"));
+                Boolean b = iUserService.saveOrUpdate(user);
+                return Result.ok().data("data", b);
+            } else {
+                return Result.error().message("用户名已存在");
+            }
+        }
+
+
+>>>>>>> master
     }
 
     @RequestMapping(value = "/insert")
@@ -121,5 +144,17 @@ public class UserController {
         return Result.ok().message("密码修改成功");
     }
 
+<<<<<<< HEAD
+=======
+    @RequestMapping(value = "/setavator", method = RequestMethod.POST)
+    public Result setUserAvator(@RequestBody User user, HttpServletRequest request) {
+        String token = request.getHeader("X-Token");
+        String userId = JwtUtils.getClaimsByToken(token).getId();
+        userMapper.update(user, new QueryWrapper<User>().eq("id", userId));
+        int userUpdate = userMapper.update(user, new QueryWrapper<User>().eq("id", userId));
+        return Result.ok().data("data", userUpdate).message("头像上传成功!");
+    }
+
+>>>>>>> master
 
 }

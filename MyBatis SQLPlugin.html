@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>转换SQL</title>
+  <script type='text/javascript'>
+    window.onload = function() {
+      document.getElementById('1').value = `==>  Preparing: SELECT id,title,\`fTitle\`,pic,s_pic,contents,\`update\`,num,top,author,webtitle,webkey,webdes FROM news WHERE (title LIKE ? AND \`update\` = ?) ORDER BY id DESC LIMIT ?
+==> Parameters: %123%(String), 2023-07-18(LocalDate), 10(Long)`;
+
+    };
+
+    /**
+     * 抓换成字符串
+     * @param inputText
+     */
+    function multiTransefer(inputText) {
+      // 将传入的字符串根据MyBatis的标识拆分成数组
+      var mybatisSQLTexts = new Array();
+
+      while (inputText.lastIndexOf('Preparing: ') > -1) {
+
+        // 因为是从尾部截取，所以需要从数组的头部添加
+        mybatisSQLTexts.unshift(inputText.substring(inputText.lastIndexOf('Preparing: ')));
+        inputText = inputText.substring(0, inputText.lastIndexOf('Preparing: '));
+
+      }
+      console.log(mybatisSQLTexts);
+
+      // 将数组中的字符串挨个处理，以数组形式返回
+      for (var i = 0; i < mybatisSQLTexts.length; i++) {
+        f(mybatisSQLTexts[i]);
+      }
+    }
+
+    /**
+     *  转换成sql，单句的问号生成SQL
+     * @param textVa
+     * @returns {*}
+     */
+    function f(textVa) {
+      // 获取带问号的SQL语句
+      var statementStartIndex = textVa.indexOf('Preparing: ');
+      var statementEndIndex = textVa.length - 1;
+      for (var i = statementStartIndex; i < textVa.length; i++) {
+        if (textVa[i] == '\n') {
+          statementEndIndex = i;
+          break;
+        }
+      }
+      // 未经操作的带 ? 的sql 语句
+      var statementStr = textVa.substring(statementStartIndex + 'Preparing: '.length, statementEndIndex);
+
+      //获取参数
+      var parametersStartIndex = textVa.indexOf('Parameters: ');
+      var parametersEndIndex = textVa.length - 1;
+      for (var i = parametersStartIndex; i < textVa.length; i++) {
+        if (textVa[i] == '\n') {
+          parametersEndIndex = i;
+          break;
+        } else {
+          // console.log(textVa[i]);
+        }
+      }
+
+      // 拆出来的参数
+      var parametersStr = textVa.substring(parametersStartIndex + 'Parameters: '.length, parametersEndIndex);
+      // 将拆出来的参数变成数组
+      parametersStr = parametersStr.split(',');
+
+      for (var i = 0; i < parametersStr.length; i++) {
+        // 如果数据中带括号将使用其他逻辑
+        tempStr = parametersStr[i].substring(0, parametersStr[i].indexOf('('));
+        // 获取括号中内容
+        typeStr = parametersStr[i].substring(parametersStr[i].indexOf('(') + 1, parametersStr[i].indexOf(')'));
+        // 如果为字符类型
+        if (typeStr == 'String' || typeStr == 'Timestamp' || typeStr == 'LocalDate') {
+          statementStr = statementStr.replace('?', '\'' + tempStr.trim() + '\'');
+        } else {
+          // 数值类型
+          statementStr = statementStr.replace('?', tempStr.trim());
+        }
+      }
+      // console.log(statementStr);
+      document.getElementById('d1').value += '\n\n';
+      document.getElementById('d1').value += statementStr;
+      return textVa;
+    }
+
+    function ClearTextArea() {
+      document.getElementById('d1').value = '';
+      document.getElementById('1').value = '';
+    }
+  </script>
+</head>
+
+<body>
+<div style="width:80%">
+
+  <div style='border: 1px solid #CCCCCC; padding: 5px; margin-bottom:10px;'>
+    <h6>示例</h6>
+    ==> Preparing: SELECT id,title,`fTitle`,pic,s_pic,contents,`update`,num,top,author,webtitle,webkey,webdes FROM news
+    WHERE (title LIKE ? AND `update` = ?) ORDER BY id DESC LIMIT ?
+    <br>==> Parameters: %123%(String), 2023-07-18(LocalDate), 10(Long)
+  </div>
+  <h3>日志区域</h3>
+  <textarea name='getStr' id='1' rows='5' cols='100'></textarea>
+</div>
+<div style='display: flex; margin:10px 0px 10px 0px'>
+  <button type='submit' onClick="multiTransefer(document.getElementById('1').value)">转换</button>
+  <button type='submit' onclick='ClearTextArea()'>重置</button>
+</div>
+<div>
+  <h3>SQL 转换区域</h3>
+  <textarea name='getStr' id='d1' rows='8' cols='100'></textarea>
+</div>
+</body>
+</html>

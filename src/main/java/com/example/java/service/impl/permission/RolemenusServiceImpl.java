@@ -3,11 +3,17 @@ package com.example.java.service.impl.permission;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+<<<<<<< HEAD
 import com.example.java.entity.permission.Menu;
 import com.example.java.entity.permission.Menubutton;
 import com.example.java.entity.permission.Rolebuttons;
 import com.example.java.entity.permission.RoleMenus;
 import com.example.java.mapper.permission.RoleButtonsMapper;
+=======
+import com.example.java.entity.permission.*;
+import com.example.java.mapper.permission.RoleButtonsMapper;
+import com.example.java.mapper.permission.RoleMapper;
+>>>>>>> master
 import com.example.java.mapper.permission.RolemenusMapper;
 import com.example.java.service.INewsService;
 import com.example.java.service.permission.IRolemenusService;
@@ -43,6 +49,12 @@ public class RolemenusServiceImpl extends ServiceImpl<RolemenusMapper, RoleMenus
     @Autowired
     private RoleButtonsMapper roleButtonsMapper;
 
+<<<<<<< HEAD
+=======
+    @Autowired
+    private RoleMapper roleMapper;
+
+>>>>>>> master
     public void comparisonarray(RoleVo roleVo) {
 
         // 查询当前角色有哪些菜单
@@ -217,6 +229,16 @@ public class RolemenusServiceImpl extends ServiceImpl<RolemenusMapper, RoleMenus
             }
         }
         // 3 新增按钮
+<<<<<<< HEAD
+=======
+
+        Role roleUpdate = new Role();
+        roleUpdate.setId(roleVo.getId());
+        roleUpdate.setRoleName(roleVo.getRoleName());
+        roleUpdate.setRoleDesc(roleVo.getRoleDesc());
+        roleMapper.updateById(roleUpdate);
+
+>>>>>>> master
     }
 
     /**

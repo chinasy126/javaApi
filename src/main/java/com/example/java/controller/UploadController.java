@@ -2,6 +2,10 @@ package com.example.java.controller;
 
 import com.example.java.utils.UploadUtils;
 import com.example.java.vo.ObjectRESTResult;
+<<<<<<< HEAD
+=======
+import org.springframework.beans.factory.annotation.Value;
+>>>>>>> master
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +25,12 @@ import java.util.UUID;
 @RequestMapping
 public class UploadController {
 
+<<<<<<< HEAD
+=======
+    @Value("${build.file.prefix}")
+    private String buildFilePrefix;
+
+>>>>>>> master
     /**
      * 图片上传
      *
@@ -48,8 +58,14 @@ public class UploadController {
         String data = sdf.format(dt);
 
         // 调用UploadUtils工具类将图片存放到服务器上
+<<<<<<< HEAD
         File fileDir = UploadUtils.getImgDirFile(data);
 
+=======
+       // File fileDir = UploadUtils.getImgDirFile(data);
+        UploadUtils uploadUtils = new UploadUtils();
+        File fileDir = uploadUtils.getImgDirFile(data);
+>>>>>>> master
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
             imgFile.transferTo(newFile);
@@ -83,8 +99,14 @@ public class UploadController {
         String data = sdf.format(dt);
 
         // 调用UploadUtils工具类将图片存放到服务器上
+<<<<<<< HEAD
         File fileDir = UploadUtils.getImgDirFile(data);
 
+=======
+       // File fileDir = UploadUtils.getImgDirFile(data);
+        UploadUtils uploadUtils = new UploadUtils();
+        File fileDir = uploadUtils.getImgDirFile(data);
+>>>>>>> master
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
             imgFile.transferTo(newFile);

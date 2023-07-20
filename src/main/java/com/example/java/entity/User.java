@@ -2,10 +2,17 @@ package com.example.java.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.example.java.entity.permission.Menu;
+<<<<<<< HEAD
 import com.example.java.entity.permission.RoleMenus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
+=======
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
+
+>>>>>>> master
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -31,8 +38,11 @@ public class User {
     @ApiModelProperty(value = "所属角色ID")
     private Integer roleId;
 
+<<<<<<< HEAD
     @TableField(exist = false)
     private List<Order> orders;
+=======
+>>>>>>> master
 
     @ApiModelProperty(value = "角色名称")
     @TableField(exist = false)

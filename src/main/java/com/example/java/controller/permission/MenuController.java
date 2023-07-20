@@ -115,8 +115,26 @@ public class MenuController {
         BeanUtils.copyProperties(menusVo, data);
 
 
+<<<<<<< HEAD
         // 如果不为空添加二级菜单， !StringUtils.isBlank(menusVo.getParentMenu())
         if (menusVo.getParentMenu() != null) {
+=======
+        if (menusVo.getChildren() != null && menusVo.getChildren().size() > 0 &&
+                menusVo.getParentMenu() != null
+                && !menusVo.getParentMenu().trim().isEmpty()) {
+            return Result.error().message("无法移动子菜单的一级菜单");
+        }
+
+        if (menusVo.getId() != null) {
+            int fid = menuMapper.selectOne(new QueryWrapper<Menu>().eq("id", menusVo.getId())).getFid();
+            if (fid != menusVo.getFid()) {
+                return Result.error().message("移动请慢一些，请正常移动");
+            }
+        }
+
+        // 如果不为空添加二级菜单， !StringUtils.isBlank(menusVo.getParentMenu())
+        if (menusVo.getParentMenu() != null && menusVo.getParentMenu().length() != 0 && menusVo.getParentMenu() != "") {
+>>>>>>> master
             Menu menu = iMenuService.getOne(new QueryWrapper<Menu>().eq("name", menusVo.getParentMenu().split(",")[1]));
 //            String[] stringList = menusVo.getParentMenu().split(",");
 //            String[] stringList = new String[0];
@@ -126,7 +144,11 @@ public class MenuController {
 //            data.setFid(menu.getId());
             data.setFid(menu.getId());
         } else {
+<<<<<<< HEAD
             data.setFid(0);
+=======
+            // data.setFid(0);
+>>>>>>> master
         }
         Boolean menuBoolean = iMenuService.saveOrUpdate(data);
         return Result.ok().data("ok", menuBoolean);

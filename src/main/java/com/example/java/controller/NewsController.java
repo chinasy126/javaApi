@@ -14,6 +14,10 @@ import com.example.java.mapper.NewsMapper;
 import com.example.java.service.INewsService;
 import com.example.java.utils.JwtUtils;
 import com.example.java.utils.Result;
+<<<<<<< HEAD
+=======
+import com.example.java.vo.ExportVo;
+>>>>>>> master
 import com.example.java.vo.NewsVo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -196,7 +200,14 @@ public class NewsController {
      */
     @PostMapping("/export")
     @ApiOperation(value = "新闻信息导出", notes = "/export")
+<<<<<<< HEAD
     public void export(@RequestBody News news, HttpServletResponse response) {
+=======
+//    public void export(@RequestBody ExportVo news, HttpServletResponse response) {
+    public void export(@RequestBody Map<String,Object> news, HttpServletResponse response) {
+
+        List<Integer> ids = (List<Integer>) news.get("id");
+>>>>>>> master
 
         try {
             response.setHeader("content-Type", "application/vnd.ms-excel");
@@ -204,6 +215,7 @@ public class NewsController {
             ExportParams exportParams = new ExportParams();
 
             QueryWrapper<News> queryWrapper = new QueryWrapper<>();
+<<<<<<< HEAD
             if (StringUtils.isNotBlank(news.getTitle())) {
 //                queryWrapper.eq("title",news.getTitle());
                 queryWrapper.like("title", news.getTitle());
@@ -213,6 +225,22 @@ public class NewsController {
                 //if (!StringUtils.isBlank(news.getUpdate())) {
                 queryWrapper.like("`update`", news.getUpdate());
             }
+=======
+//            if (StringUtils.isNotBlank(news.getTitle())) {
+////                queryWrapper.eq("title",news.getTitle());
+//                queryWrapper.like("title", news.getTitle());
+//            }
+//
+//            if (news.getUpdate() != null) {
+//                //if (!StringUtils.isBlank(news.getUpdate())) {
+//                queryWrapper.like("`update`", news.getUpdate());
+//            }
+
+            if (ids.size() > 0) {
+                queryWrapper.in("id", ids);
+            }
+
+>>>>>>> master
             List<News> newsList = newsMapper.selectList(queryWrapper);
             Workbook workbook = ExcelExportUtil.exportExcel(exportParams, News.class, newsList);
             workbook.write(response.getOutputStream());
@@ -245,7 +273,11 @@ public class NewsController {
         } catch (Exception e1) {
             logger.error("导入失败：{}", e1.getMessage());
         }
+<<<<<<< HEAD
         return Result.ok().data("ok","导入成功");
+=======
+        return Result.ok().data("ok", "导入成功");
+>>>>>>> master
     }
 
 
