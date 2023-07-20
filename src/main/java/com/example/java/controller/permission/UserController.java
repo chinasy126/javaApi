@@ -39,9 +39,26 @@ public class UserController {
 
     @RequestMapping(value = "/insertOrUpdate", method = RequestMethod.POST)
     public Result insertOrUpdate(@RequestBody User user) {
-        Boolean b = iUserService.saveOrUpdate(user);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",user.getUsername());
 
-        return Result.ok().data("data", b);
+        if(user.getId() != 0){
+            user.setPassword(MD5Util.MD5Encode(user.getPassword(), "UTF-8"));
+            Boolean b = iUserService.saveOrUpdate(user);
+            return Result.ok().data("data", b);
+        }else {
+            User user1 = new User();
+            user1 = userMapper.selectOne(queryWrapper);
+            if (user1 == null) {
+                user.setPassword(MD5Util.MD5Encode(user.getPassword(), "UTF-8"));
+                Boolean b = iUserService.saveOrUpdate(user);
+                return Result.ok().data("data", b);
+            } else {
+                return Result.error().message("用户名已存在");
+            }
+        }
+
+
     }
 
     @RequestMapping(value = "/insert")

@@ -27,6 +27,9 @@ public class ImgUploadController {
     @Value("${upload.image.prefix}")
     private String upImagePrefix;
 
+    @Value("${upload.image.prefix.url}")
+    private String upImagePrefixUrl;
+
 //    @Value("${build.file.prefix}")
 //    private String buildFilePrefix;
 
@@ -63,6 +66,10 @@ public class ImgUploadController {
             data = type + '/' + data;
         }
 
+        // 存储位置
+        String imgDataUrl = '/'+upImagePrefixUrl + '/' + data;
+
+        // 文件存放相对地址
         data = upImagePrefix + '/' + data;
 
         //File fileDir = UploadUtils.getImgDirFile(data);
@@ -77,7 +84,7 @@ public class ImgUploadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Result.ok().data("file", data + '/' + fileNames);
+        return Result.ok().data("file", imgDataUrl + '/' + fileNames);
     }
 
     /**

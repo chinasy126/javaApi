@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
                 excludePathPatterns("/user/logout").
                 excludePathPatterns("/" + upImagePrefix + "/**").
                 excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**").
-                excludePathPatterns("/statics/**");
+                excludePathPatterns("/statics/**","/public/**");
 
     }
 

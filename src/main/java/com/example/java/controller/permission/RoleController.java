@@ -18,6 +18,7 @@ import com.example.java.service.permission.IRolebuttonsService;
 import com.example.java.service.permission.IRolemenusService;
 import com.example.java.utils.Result;
 import com.example.java.vo.menus.RoleVo;
+import com.google.common.base.Joiner;
 import com.sun.org.apache.xpath.internal.functions.FuncUnparsedEntityURI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,8 @@ public class RoleController {
 //    public Result dataDelete(@PathVariable int id) {
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public Result dataDelete(@RequestBody Role role) {
+
+
         int id = role.getId();
         QueryWrapper<Role> roleQueryWrapper = new QueryWrapper<Role>();
         roleQueryWrapper.eq("id", id);
@@ -105,6 +108,12 @@ public class RoleController {
         // 删除权限菜单
         QueryWrapper<RoleMenus> rolemenusQueryWrapper = new QueryWrapper<>();
         rolemenusQueryWrapper.eq("roleId", id);
+
+        List<Integer> roleMenuIds = rolemenusMapper.selectList(rolemenusQueryWrapper).stream().map( p->p.getId() ).collect(Collectors.toList());
+        String roleMenuIdStr = Joiner.on(",").join(roleMenuIds);
+        // 删除rolebuttons 角色所对应的按钮
+        roleButtonsMapper.deleteBatchByRoleMenuIds(roleMenuIdStr);
+
         int roleMenusId = rolemenusMapper.delete(rolemenusQueryWrapper);
         System.out.println(roleMenusId + "roleMenusId");
         // 删除角色表
@@ -121,7 +130,7 @@ public class RoleController {
     @RequestMapping(value = "/rolelist", method = RequestMethod.POST)
     public Result roleList() {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("id");
+        queryWrapper.orderByAsc("id");
         List<Role> roleList = roleMapper.selectList(queryWrapper);
         return Result.ok().data("data", roleList);
     }
