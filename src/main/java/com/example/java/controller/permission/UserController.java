@@ -39,11 +39,6 @@ public class UserController {
 
     @RequestMapping(value = "/insertOrUpdate", method = RequestMethod.POST)
     public Result insertOrUpdate(@RequestBody User user) {
-<<<<<<< HEAD
-        Boolean b = iUserService.saveOrUpdate(user);
-
-        return Result.ok().data("data", b);
-=======
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",user.getUsername());
 
@@ -64,7 +59,6 @@ public class UserController {
         }
 
 
->>>>>>> master
     }
 
     @RequestMapping(value = "/insert")
@@ -144,8 +138,6 @@ public class UserController {
         return Result.ok().message("密码修改成功");
     }
 
-<<<<<<< HEAD
-=======
     @RequestMapping(value = "/setavator", method = RequestMethod.POST)
     public Result setUserAvator(@RequestBody User user, HttpServletRequest request) {
         String token = request.getHeader("X-Token");
@@ -155,6 +147,5 @@ public class UserController {
         return Result.ok().data("data", userUpdate).message("头像上传成功!");
     }
 
->>>>>>> master
 
 }

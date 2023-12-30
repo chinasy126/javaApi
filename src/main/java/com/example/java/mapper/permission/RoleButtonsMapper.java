@@ -1,11 +1,6 @@
 package com.example.java.mapper.permission;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-<<<<<<< HEAD
-import com.example.java.entity.permission.Rolebuttons;
-
-public interface RoleButtonsMapper extends BaseMapper<Rolebuttons> {
-=======
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.java.entity.Product;
@@ -22,5 +17,4 @@ public interface RoleButtonsMapper extends BaseMapper<Rolebuttons> {
 
         @Delete("DELETE FROM rolebuttons WHERE roleMenuId IN (${roleMenuIds})")
         Integer deleteBatchByRoleMenuIds(String roleMenuIds);
->>>>>>> master
 }

@@ -1,18 +1,12 @@
 package com.example.java.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-<<<<<<< HEAD
-import com.example.java.utils.Result;
-import com.example.java.utils.UploadUtils;
-import com.example.java.vo.ObjectRESTResult;
-=======
 import com.example.java.service.AliyunOssUploadService;
 import com.example.java.utils.Result;
 import com.example.java.utils.UploadUtils;
 import com.example.java.vo.ObjectRESTResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
->>>>>>> master
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,8 +24,6 @@ import java.util.UUID;
 @RequestMapping(value = "/upload")
 public class ImgUploadController {
 
-<<<<<<< HEAD
-=======
     @Value("${upload.image.prefix}")
     private String upImagePrefix;
 
@@ -44,7 +36,6 @@ public class ImgUploadController {
     @Autowired
     private AliyunOssUploadService aliyunOssUploadService;
 
->>>>>>> master
     /**
      * 图片上传
      *
@@ -58,11 +49,7 @@ public class ImgUploadController {
                                  @RequestParam(value = "type", required = false, defaultValue = "") String type,
                                  HttpServletRequest request, HttpSession session) {
         ObjectRESTResult restResult = new ObjectRESTResult();
-<<<<<<< HEAD
-        if (imgFile.isEmpty()) {
-=======
         if (imgFile.isEmpty() ) {
->>>>>>> master
             return Result.error().message("上传失败，请选择文件");
         }
         String uuid = UUID.randomUUID().toString().trim();
@@ -78,9 +65,6 @@ public class ImgUploadController {
         if (StringUtils.isNotBlank(type)) {
             data = type + '/' + data;
         }
-<<<<<<< HEAD
-        File fileDir = UploadUtils.getImgDirFile(data);
-=======
 
         // 存储位置
         String imgDataUrl = '/'+upImagePrefixUrl + '/' + data;
@@ -94,18 +78,12 @@ public class ImgUploadController {
 //        File fileDir = uploadUtils.getImgDirFile(buildFilePrefix,data);
         File fileDir = uploadUtils.getImgDirFile(data);
 
->>>>>>> master
         try {
             File newFile = new File(fileDir.getAbsolutePath() + File.separator + fileNames);
             imgFile.transferTo(newFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
-<<<<<<< HEAD
-        return Result.ok().data("file", data + '/' + fileNames);
-    }
-
-=======
         return Result.ok().data("file", imgDataUrl + '/' + fileNames);
     }
 
@@ -126,5 +104,4 @@ public class ImgUploadController {
 
 
 
->>>>>>> master
 }
