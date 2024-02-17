@@ -19,4 +19,5 @@ public interface IProductclassService extends IService<Productclass> {
 
     public Productclass returnClassifyInfo(Productclass productClassVo);
 
+    public Boolean modifyProductClass(ProductClassVo productclass);
 }

@@ -177,13 +177,19 @@ public class ProductClassController {
      */
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
     public Result dataModify(@RequestBody ProductClassVo productClassVo, HttpServletRequest request) {
+        /**
+         * 1、先查询出来当前数据
+         * 2、修改当前数据
+         * 如果 当前分类是否有改动
+         * 	3、如果下边有分类则移动下边分类
+         */
         Productclass productclass = new Productclass();
         BeanUtils.copyProperties(productClassVo, productclass);// 复制
 
         // 当前修改信息的数据库数据
         Productclass dataInfo = productclassMapper.selectOne(new QueryWrapper<Productclass>().eq("classid", productClassVo.getClassid()));
         // 如果相等则指修改数据信息不涉及分类信息
-        if (dataInfo.getRootid() == productClassVo.getRootid()) {
+        if (dataInfo.getRootid().equals(productClassVo.getRootid()) || dataInfo.getRootid().equals(0) && productClassVo.getRootid() == null) {
             productclassMapper.update(productclass, new QueryWrapper<Productclass>().eq("classid", productclass.getClassid()));
         } else {
             // 查询 当前分类下是否还有其他分类

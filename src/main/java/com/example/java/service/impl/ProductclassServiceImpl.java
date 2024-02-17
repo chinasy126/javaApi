@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.java.entity.Product;
 import com.example.java.entity.Productclass;
 import com.example.java.mapper.ProductclassMapper;
 import com.example.java.service.IProductclassService;
@@ -56,6 +57,7 @@ public class ProductclassServiceImpl extends ServiceImpl<ProductclassMapper, Pro
     /**
      * 转换分类信息
      * rootId
+     *
      * @param productClassVo
      */
     public Productclass returnClassifyInfo(Productclass productClassVo) {
@@ -66,9 +68,9 @@ public class ProductclassServiceImpl extends ServiceImpl<ProductclassMapper, Pro
         Productclass productclass = new Productclass();
         // 2。2 数据库中不存在任何数据 则从0001 开始计数
         String classPower = this.classPower;
-        if(rootId == 0){
+        if (rootId == 0) {
             // 2。1 查询出 【一级分类里】 最大的分类转换成classPower
-             productclass = productclassMapper.selectOne(new QueryWrapper<Productclass>()
+            productclass = productclassMapper.selectOne(new QueryWrapper<Productclass>()
                     .eq("depth", this.classPower.length())
                     .orderByDesc("classid").last("limit 1"));
 
@@ -76,20 +78,20 @@ public class ProductclassServiceImpl extends ServiceImpl<ProductclassMapper, Pro
             classPower = productclass == null ?
                     this.getClassPower(this.classPower) :
                     this.getClassPower(productclass.getClasspower());
-        }else{
+        } else {
             // 首先查询上一级别所有信息 获取当前选择的信息
             productclass = productclassMapper.selectOne(new QueryWrapper<Productclass>().eq("classid", productClassVo.getRootid()));
 
             // 2。4 是属于多级分类获取到的classpower
             // 2。5 查询当前分类下所有子分类，子分类最大的classpower加1 当前选择下边所有的信息
-           Productclass subClass = productclassMapper.selectOne(
+            Productclass subClass = productclassMapper.selectOne(
                     new QueryWrapper<Productclass>()
                             .orderByDesc("classpower")
                             .eq("depth", productclass.getDepth() + this.classPower.length())
                             .likeRight("classpower", productclass.getClasspower())
                             .last("limit 1")
             );
-           // 2.6 如果子分类不存在则直接 上一级分类的classpower+0001 , 如果存在就是最大的加1
+            // 2.6 如果子分类不存在则直接 上一级分类的classpower+0001 , 如果存在就是最大的加1
             classPower = subClass == null ? this.getClassPower(productclass.getClasspower().concat(this.classPower)) :
                     this.getClassPower(subClass.getClasspower());
         }
@@ -127,6 +129,56 @@ public class ProductclassServiceImpl extends ServiceImpl<ProductclassMapper, Pro
             String k = decimalFormat.format(i);
             return frontCode + k;
         }
+    }
+
+
+    public Boolean modifyProductClass(ProductClassVo proVo) {
+        /**
+         * 1、先查询出来当前数据
+         * 2、修改当前数据
+         * 如果 当前分类是否有改动
+         * 	3、如果下边有分类则移动下边分类
+         */
+
+        int classid = proVo.getClassid();
+        Productclass productclass = productclassMapper.selectById(classid);
+
+        // S 修改当前数据
+        if ((proVo.getRootid() == null && productclass.getRootid().equals("")) || proVo.getRootid().equals(productclass.getRootid())) {
+            Productclass updateProClass = new Productclass();
+            BeanUtils.copyProperties(proVo, updateProClass);
+            QueryWrapper<Productclass> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("classid", classid);
+            productclassMapper.update(updateProClass, queryWrapper);
+
+        } else {
+            Productclass updateProClass = new Productclass();
+            BeanUtils.copyProperties(proVo, updateProClass);
+            QueryWrapper<Productclass> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("classid", classid);
+            productclassMapper.update(updateProClass, queryWrapper);
+        }
+
+
+        // S 修改当前数据
+        if (proVo.getRootid() != productclass.getRootid()) {
+            String classpower = productclass.getClasspower();
+
+            QueryWrapper<Productclass> queryWrapList = new QueryWrapper<>();
+            queryWrapList.likeRight("classpower", classpower);
+            queryWrapList.ne("classpower", classpower);
+            List<Productclass> productclassList = productclassMapper.selectList(queryWrapList);
+
+            for (Productclass p : productclassList) {
+
+            }
+
+            System.out.println(productclassList);
+
+        }
+
+        System.out.println(productclass);
+        return true;
     }
 
 }
